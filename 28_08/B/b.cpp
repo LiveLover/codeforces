@@ -13,12 +13,18 @@ void print_vector(const vector<int> &v) {
 	cout << endl;
 }
 
+void print_matrix(const vector<vector<int>> &m) {
+	for (auto i: m)
+		print_vector(i);
+}
+
 int main () {
 	int k, n;
 	int a, b, x;
-	ifstream cin("in1");
+	ifstream cin("in2");
 	cin >> n;
 	vector<vector<int>> v(n, vector<int>(n));
+	vector<vector<int>> w(n, vector<int>(n));
 
 	for(int i=0; i<n; i++){
 		for (int j=0; j<n; ++j){
@@ -27,23 +33,25 @@ int main () {
 		}
 	}
 
-	for (auto i: v)
-		print_vector(i);
-	cin >> k;
-
+    cin >> k;
 	for (int l=0; l<k; ++l)  {
 		cin >> a >> b >> x;
 
-		cout << "abx" << a << b << x << endl;
+        a--;
+        b--;
 		v[a][b] = min(v[a][b], x);
+        v[b][a] = v[a][b];
 		for(int i=0; i<n; ++i)
 			for(int j=0; j<n; ++j)
-				v[i][j] = min3(v[i][j], v[i][a]+v[a][b]+v[b][j], v[i][b]+v[b][a]+v[a][j]);
+				w[i][j] = min3(v[i][j], v[i][a]+v[a][b]+v[b][j], v[i][b]+v[b][a]+v[a][j]);
+        v=w;
+//        print_matrix(v);
+ //       cout << "<<<<<<<<" << endl;
 	
 		int res =0;
 		for (auto i: v)
 			for(auto j: i)
 				res += j;
-		cout << res << endl;
+		cout << res/2 << endl;
 	}
 }
